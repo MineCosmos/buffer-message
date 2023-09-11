@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{CDF6AD49-5BBD-4D1A-9ACB-580292BF1E2C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MineCosmos.BufferMessage", "src\MineCosmos.BufferMessage\MineCosmos.BufferMessage.csproj", "{DB2037AA-C9A3-4DD7-B526-841CCFBE241D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{88C7229F-F504-4072-95D2-D057E4C532A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MineCosmos.BufferMessage.Tests", "test\MineCosmos.BufferMessage.Tests\MineCosmos.BufferMessage.Tests.csproj", "{F3207AE7-3A33-49B9-955A-DFA2C7E209EF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DB2037AA-C9A3-4DD7-B526-841CCFBE241D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB2037AA-C9A3-4DD7-B526-841CCFBE241D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB2037AA-C9A3-4DD7-B526-841CCFBE241D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB2037AA-C9A3-4DD7-B526-841CCFBE241D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3207AE7-3A33-49B9-955A-DFA2C7E209EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3207AE7-3A33-49B9-955A-DFA2C7E209EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3207AE7-3A33-49B9-955A-DFA2C7E209EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3207AE7-3A33-49B9-955A-DFA2C7E209EF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DB2037AA-C9A3-4DD7-B526-841CCFBE241D} = {CDF6AD49-5BBD-4D1A-9ACB-580292BF1E2C}
+		{F3207AE7-3A33-49B9-955A-DFA2C7E209EF} = {88C7229F-F504-4072-95D2-D057E4C532A4}
+	EndGlobalSection
+EndGlobal
