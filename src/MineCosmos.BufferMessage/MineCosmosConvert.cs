@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 using MineCosmos.BufferMessage.Attributes;
 using MineCosmos.BufferMessage.Common;
 
@@ -6,6 +7,14 @@ namespace MineCosmos.BufferMessage;
 
 public static class MineCosmosConvert
 {
+    public static void Init()
+    {
+        IBufferMessageBuilder builder = new BufferMessageBuilder();
+        builder.Services.AddScoped<BufferTypeMapper>();
+
+        builder.Build();
+    }
+
     public static T? Deserialize<T>(byte[] data) where T : new()
     {
         return default;
@@ -17,20 +26,20 @@ public static class MineCosmosConvert
 
         foreach (var prop in props)
         {
-            if (prop.PropertyType.IsValue())
-            {
+            // if (prop.PropertyType.IsValue())
+            // {
 
-            }
+            // }
 
-            if (prop.PropertyType.IsString())
-            {
+            // if (prop.PropertyType.IsString())
+            // {
 
-            }
+            // }
 
-            if (prop.PropertyType.IsArray(out var innerType))
-            {
+            // if (prop.PropertyType.IsArray(out var innerType))
+            // {
 
-            }
+            // }
         }
 
         return Array.Empty<byte>();

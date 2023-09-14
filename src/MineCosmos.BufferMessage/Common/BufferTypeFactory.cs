@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Collections;
+using Microsoft.Extensions.DependencyInjection;
 using MineCosmos.BufferMessage.Common;
 using MineCosmos.BufferMessage.Enums;
 
@@ -51,7 +52,7 @@ public class BufferTypeMapper
             return value;
         }
 
-        return type.IsArray(out _) ? BufferType.Array : BufferType.Object;
+        return IsArray(type, out _) ? BufferType.Array : BufferType.Object;
     }
 
     public bool IsBasicType(Type type)
@@ -63,12 +64,40 @@ public class BufferTypeMapper
     {
         return type == typeof(string) || type == typeof(DateTime) || type == typeof(decimal);
     }
+
+    public bool IsArray(Type type, out Type? innerType)
+    {
+        if (IsBasicType(type))
+        {
+            innerType = null;
+            return false;
+        }
+
+        if (type.IsArray)
+        {
+            innerType = type.GetElementType();
+            return innerType is not null;
+        }
+
+        if (typeof(IEnumerable).IsAssignableFrom(type) ||
+            typeof(IList).IsAssignableFrom(type) ||
+            typeof(ICollection).IsAssignableFrom(type))
+        {
+            var types = type.GetGenericArguments();
+            innerType = types.Any() ? types[0] : null;
+
+            return innerType != null;
+        }
+
+        innerType = null;
+        return false;
+    }
 }
 
 internal interface IBufferMessageBuilder
 {
-    public IServiceProvider Instance { get; set; }
-    public IServiceCollection Services { get; set; }
+    public IServiceProvider? Instance { get; set; }
+    public IServiceCollection Services { get; }
     public void Build();
 }
 
@@ -78,11 +107,11 @@ internal class BufferMessageBuilder : IBufferMessageBuilder
     {
         Services = new ServiceCollection();
     }
-    public IServiceCollection? Services { get; set; }
+    public IServiceCollection Services { get; }
     public IServiceProvider? Instance { get; set; }
 
     public void Build()
     {
-        Instance = Services?.BuildServiceProvider();
+        Instance = Services.BuildServiceProvider();
     }
 }

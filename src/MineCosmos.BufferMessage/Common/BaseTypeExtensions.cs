@@ -5,44 +5,6 @@ namespace MineCosmos.BufferMessage.Common;
 
 public static class BaseTypeExtensions
 {
-    public static bool IsValue(this Type type)
-    {
-        return BufferTypeMapper.IsBasicType(type);
-    }
-
-    public static bool IsArray(this Type type, out Type? innerType)
-    {
-        if (IsValue(type))
-        {
-            innerType = null;
-            return false;
-        }
-
-        if (type.IsArray)
-        {
-            innerType = type.GetElementType();
-            return innerType is not null;
-        }
-
-        if (typeof(IEnumerable).IsAssignableFrom(type) ||
-            typeof(IList).IsAssignableFrom(type) ||
-            typeof(ICollection).IsAssignableFrom(type))
-        {
-            var types = type.GetGenericArguments();
-            innerType = types.Any() ? types[0] : null;
-
-            return innerType != null;
-        }
-
-        innerType = null;
-        return false;
-    }
-
-    public static bool IsString(this Type type)
-    {
-        return BufferTypeMapper.IsString(type);
-    }
-
     private static Type? FormatType(this Type type)
     {
         return null;
