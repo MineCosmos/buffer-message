@@ -29,19 +29,19 @@ public class BufferTypeMapper
     {
         BasicBufferTypeMap = new()
         {
-            [typeof(bool)] = BufferType.Byte,
-            [typeof(byte)] = BufferType.Byte,
-            [typeof(short)] = BufferType.Short,
-            [typeof(ushort)] = BufferType.UShort,
-            [typeof(Int16)] = BufferType.Int16,
-            [typeof(UInt16)] = BufferType.UInt16,
-            [typeof(int)] = BufferType.Int,
-            [typeof(Int32)] = BufferType.Int32,
-            [typeof(UInt32)] = BufferType.UInt32,
-            [typeof(long)] = BufferType.Long,
-            [typeof(ulong)] = BufferType.ULong,
-            [typeof(Int64)] = BufferType.Int64,
-            [typeof(UInt64)] = BufferType.UInt64,
+            // [typeof(bool)] = BufferType.Byte,
+            // [typeof(byte)] = BufferType.Byte,
+            // [typeof(short)] = BufferType.Short,
+            // [typeof(ushort)] = BufferType.UShort,
+            // [typeof(Int16)] = BufferType.Int16,
+            // [typeof(UInt16)] = BufferType.UInt16,
+            // [typeof(int)] = BufferType.Int,
+            // [typeof(Int32)] = BufferType.Int32,
+            // [typeof(UInt32)] = BufferType.UInt32,
+            // [typeof(long)] = BufferType.Long,
+            // [typeof(ulong)] = BufferType.ULong,
+            // [typeof(Int64)] = BufferType.Int64,
+            // [typeof(UInt64)] = BufferType.UInt64,
         };
     }
 
