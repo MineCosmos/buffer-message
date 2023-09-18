@@ -1,4 +1,7 @@
+using System.Diagnostics;
+using System.Text;
 using MineCosmos.Buffers;
+using Newtonsoft.Json;
 
 namespace MineCosmos.BufferMessage.Tests;
 
@@ -19,7 +22,7 @@ public class ValueTypesTests
 
     class Data
     {
-        public int Arg1 { get; set; }
+        public int TestProp1 { get; set; } = 1;
     }
 
     [Fact]
@@ -30,5 +33,14 @@ public class ValueTypesTests
         var buffer = "01 00 00 00 01".Replace(" ", "").ToHexBytes();
 
         var res = serializer.Deserialize<Data>(buffer);
+    }
+
+    [Fact]
+    public void Test4()
+    {
+        var json = JsonConvert.SerializeObject(new Data());
+        var buffer = "0100000001".ToHexBytes();
+
+        Trace.WriteLine($"json: {Encoding.Default.GetByteCount(json)} || buffer: {buffer.Length}");
     }
 }
