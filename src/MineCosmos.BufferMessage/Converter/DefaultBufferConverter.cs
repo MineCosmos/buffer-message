@@ -1,20 +1,22 @@
 ﻿using MineCosmos.Buffers;
+using MineCosmos.BufferMessage.Common;
+using MineCosmos.BufferMessage.Enums;
 
 namespace MineCosmos.BufferMessage;
 
 public class DefaultBufferConverter : IBufferConverter
 {
-    public bool CanConvert(Type objectType)
+    public virtual bool CanConvert(Type objectType)
     {
         return true;
     }
 
-    public object ReadBuffer(MineCosmosReader reader, Type objectType, BufferSerializer serializer)
+    public virtual object? ReadBuffer(ref MineCosmosReader reader, Type objectType, object? existingValue, BufferSerializer serializer)
     {
-        throw new NotImplementedException();
+        return BufferMessageFactory.ReadObject(ref reader, objectType);
     }
 
-    public void WriteBuffer(MineCosmosWriter writer, object value, BufferSerializer serializer)
+    public virtual void WriteBuffer(ref MineCosmosWriter writer, object value, BufferSerializer serializer)
     {
         throw new NotImplementedException();
     }
@@ -24,6 +26,6 @@ public interface IBufferConverter
 {
     bool CanConvert(Type objectType);
 
-    object ReadBuffer(MineCosmosReader reader, Type objectType, BufferSerializer serializer);
-    void WriteBuffer(MineCosmosWriter writer, object value, BufferSerializer serializer);
+    object? ReadBuffer(ref MineCosmosReader reader, Type objectType, object? existingValue, BufferSerializer serializer);
+    void WriteBuffer(ref MineCosmosWriter writer, object value, BufferSerializer serializer);
 }

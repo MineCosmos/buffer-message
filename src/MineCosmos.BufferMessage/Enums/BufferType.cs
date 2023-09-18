@@ -1,10 +1,12 @@
 ﻿using System;
 namespace MineCosmos.BufferMessage.Enums;
 
+[Flags]
 public enum BufferType
 {
-    Number = 0,
-    String,
-    Array,
-    Object
+    Nullable = 0,
+    Number = 1,
+    String = 2,
+    Array = 4,
+    Object = 8
 }

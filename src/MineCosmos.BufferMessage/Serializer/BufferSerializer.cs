@@ -1,20 +1,30 @@
-﻿using MineCosmos.Buffers;
+﻿using MineCosmos.BufferMessage.Common;
+using MineCosmos.BufferMessage.Enums;
+using MineCosmos.Buffers;
 
 namespace MineCosmos.BufferMessage;
 
-public class BufferSerializer : IDisposable
+public class BufferSerializer
 {
-    public object? Deserialize<T>(MineCosmosReader reader)
+    private DefaultBufferConverter _converter = new();
+
+    public object? Deserialize<T>(byte[] buffer)
     {
-        return null;
+        return Deserialize(typeof(T), buffer);
     }
 
-    public void Serialize(MineCosmosWriter writer, object value)
+    private object? Deserialize(Type objectType, byte[] buffer)
     {
+        var _reader = new MineCosmosReader(buffer);
 
+        var result = Activator.CreateInstance(objectType);
+
+        return _converter.ReadBuffer(ref _reader, objectType, result, this);
+
+        // return result;
     }
 
-    public void Dispose()
+    public void Serialize(object value)
     {
 
     }

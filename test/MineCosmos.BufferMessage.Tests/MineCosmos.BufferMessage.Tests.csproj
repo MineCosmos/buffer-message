@@ -22,4 +22,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\MineCosmos.BufferMessage\MineCosmos.BufferMessage.csproj" />
+  </ItemGroup>
+
 </Project>
