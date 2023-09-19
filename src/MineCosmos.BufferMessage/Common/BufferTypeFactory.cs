@@ -17,9 +17,13 @@ internal class BufferMessageFactory
     public static object ReadNumber(ref MineCosmosReader reader, Type objectType)
     {
         if (objectType == typeof(byte) || objectType == typeof(sbyte)) return 0 | reader.ReadByte();
-        if (objectType == typeof(short) || objectType == typeof(ushort)) return 0 | reader.ReadUInt16();
-        if (objectType == typeof(int) || objectType == typeof(uint)) return 0 | reader.ReadInt32();
-        if (objectType == typeof(long) || objectType == typeof(ulong)) return 0 | reader.ReadUInt64();
+        if (objectType == typeof(short)) return (short)(0 | reader.ReadUInt16());
+        if (objectType == typeof(int)) return 0 | reader.ReadInt32();
+        if (objectType == typeof(long)) return 0 | reader.ReadInt64();
+
+        if (objectType == typeof(ushort)) return 0 | reader.ReadUInt16();
+        if (objectType == typeof(uint)) return 0 | reader.ReadUInt32();
+        if (objectType == typeof(ulong)) return 0 | reader.ReadUInt64();
 
         return 0;
     }
@@ -91,9 +95,13 @@ internal class BufferMessageFactory
         if (!objectType.IsValueType) return;
 
         if (objectType == typeof(byte) || objectType == typeof(sbyte)) writer.WriteByte(((byte)(value ?? 0)));
-        if (objectType == typeof(short) || objectType == typeof(ushort)) writer.WriteUInt16((ushort)(value ?? 0));
-        if (objectType == typeof(int) || objectType == typeof(uint)) writer.WriteUInt32((uint)(value ?? 0));
-        if (objectType == typeof(long) || objectType == typeof(ulong)) writer.WriteUInt64((ulong)(value ?? 0));
+        if (objectType == typeof(short)) writer.WriteInt16((short)(value ?? 0));
+        if (objectType == typeof(ushort)) writer.WriteUInt16((ushort)(value ?? 0));
+        if (objectType == typeof(int)) writer.WriteInt32((int)(value ?? 0));
+        if (objectType == typeof(uint)) writer.WriteUInt32((uint)(value ?? 0));
+        if (objectType == typeof(long)) writer.WriteInt64((long)(value ?? 0));
+        if (objectType == typeof(ulong)) writer.WriteUInt64((ulong)(value ?? 0));
+
     }
 
     public static void WriteString(ref MineCosmosWriter writer, Type objectType, object? value)
@@ -108,8 +116,17 @@ internal class BufferMessageFactory
         if (objectType == typeof(double)) writer.WriteUniCode(val);
     }
 
-    public static void WriteArray(ref MineCosmosWriter writer, Type objectType, object? value)
+    public static void WriteArray(ref MineCosmosWriter writer, object? value)
     {
+        if (value is Array array)
+        {
+            writer.WriteByte((byte)array.Length);
+
+            foreach (var item in array)
+            {
+                WriteObject(ref writer, item.GetType(), item);
+            }
+        }
     }
 
     public static void WriteObject(ref MineCosmosWriter writer, Type objectType, object? value)

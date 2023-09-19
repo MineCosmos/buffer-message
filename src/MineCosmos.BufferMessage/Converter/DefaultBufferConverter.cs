@@ -18,7 +18,7 @@ public class DefaultBufferConverter : IBufferConverter
 
     public virtual void WriteBuffer(ref MineCosmosWriter writer, object value, BufferSerializer serializer)
     {
-        throw new NotImplementedException();
+        BufferMessageFactory.WriteObject(ref writer, value.GetType(), value);
     }
 }
 

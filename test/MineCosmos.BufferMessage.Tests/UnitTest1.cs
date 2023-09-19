@@ -43,4 +43,13 @@ public class ValueTypesTests
 
         Trace.WriteLine($"json: {Encoding.Default.GetByteCount(json)} || buffer: {buffer.Length}");
     }
+
+    [Fact]
+    public void Test5()
+    {
+        var serializer = new BufferSerializer();
+        var buffer = serializer.Serialize(new Data());
+
+        Trace.WriteLine($"buffer: {buffer.ToHexString()}");
+    }
 }

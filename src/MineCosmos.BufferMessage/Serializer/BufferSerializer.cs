@@ -24,8 +24,22 @@ public class BufferSerializer
         // return result;
     }
 
-    public void Serialize(object value)
+    public byte[] Serialize(object value)
     {
+        // Writer
+        var buffer = MineCosmosArrayPool.Rent(4096);
+        try
+        {
+            var writer = new MineCosmosWriter(buffer);
+
+            _converter.WriteBuffer(ref writer, value, this);
+
+            return writer.FlushAndGetEncodingArray();
+        }
+        finally
+        {
+            MineCosmosArrayPool.Return(buffer);
+        }
 
     }
 }
