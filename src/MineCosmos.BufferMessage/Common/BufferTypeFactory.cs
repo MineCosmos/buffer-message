@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using MineCosmos.BufferMessage.Common;
 using MineCosmos.BufferMessage.Enums;
@@ -19,7 +20,6 @@ internal class BufferMessageFactory
         if (objectType == typeof(short) || objectType == typeof(ushort)) return 0 | reader.ReadUInt16();
         if (objectType == typeof(int) || objectType == typeof(uint)) return 0 | reader.ReadInt32();
         if (objectType == typeof(long) || objectType == typeof(ulong)) return 0 | reader.ReadUInt64();
-        if (objectType == typeof(float) || objectType == typeof(double)) return 0 | reader.ReadUInt64();
 
         return 0;
     }
@@ -30,6 +30,8 @@ internal class BufferMessageFactory
         if (objectType == typeof(string)) return reader.ReadUnicode(length);
         if (objectType == typeof(DateTime)) return reader.ReadUnicode(length).ConvertTo<DateTime>();
         if (objectType == typeof(decimal)) return reader.ReadUnicode(length).ConvertTo<decimal>(0);
+        if (objectType == typeof(float)) return reader.ReadUnicode(length).ConvertTo<float>(0);
+        if (objectType == typeof(double)) return reader.ReadUnicode(length).ConvertTo<double>(0);
 
         return null;
     }
@@ -82,6 +84,68 @@ internal class BufferMessageFactory
         }
 
         return result;
+    }
+
+    public static void WriteNumber(ref MineCosmosWriter writer, Type objectType, object? value)
+    {
+        if (!objectType.IsValueType) return;
+
+        if (objectType == typeof(byte) || objectType == typeof(sbyte)) writer.WriteByte(((byte)(value ?? 0)));
+        if (objectType == typeof(short) || objectType == typeof(ushort)) writer.WriteUInt16((ushort)(value ?? 0));
+        if (objectType == typeof(int) || objectType == typeof(uint)) writer.WriteUInt32((uint)(value ?? 0));
+        if (objectType == typeof(long) || objectType == typeof(ulong)) writer.WriteUInt64((ulong)(value ?? 0));
+    }
+
+    public static void WriteString(ref MineCosmosWriter writer, Type objectType, object? value)
+    {
+        var val = value?.ToString() ?? "";
+        var length = (byte)Encoding.BigEndianUnicode.GetBytes(val).Length;
+        writer.WriteByte(length);
+        if (objectType == typeof(string)) writer.WriteUniCode(val);
+        if (objectType == typeof(DateTime)) writer.WriteUniCode(val);
+        if (objectType == typeof(decimal)) writer.WriteUniCode(val);
+        if (objectType == typeof(float)) writer.WriteUniCode(val);
+        if (objectType == typeof(double)) writer.WriteUniCode(val);
+    }
+
+    public static void WriteArray(ref MineCosmosWriter writer, Type objectType, object? value)
+    {
+    }
+
+    public static void WriteObject(ref MineCosmosWriter writer, Type objectType, object? value)
+    {
+        foreach (var item in objectType.GetProperties())
+        {
+            var bufferType = GetBufferType(item.PropertyType);
+            item.PropertyType.IsNullable(out var innerType);
+
+            writer.WriteByte((byte)bufferType);
+
+            switch (bufferType)
+            {
+                case BufferType.Number:
+                    WriteNumber(ref writer, innerType, item.GetValue(value));
+                    break;
+                case BufferType.String:
+                    WriteString(ref writer, innerType, item.GetValue(value));
+                    break;
+                case BufferType.Array:
+                    WriteString(ref writer, innerType, item.GetValue(value));
+                    break;
+                default:
+                    WriteObject(ref writer, innerType, item.GetValue(value));
+                    break;
+            }
+        }
+    }
+
+    private static BufferType GetBufferType(Type objectType)
+    {
+        if (objectType.IsValue()) return BufferType.Number;
+        if (objectType.IsString()) return BufferType.String;
+        if (objectType.IsArray(out _)) return BufferType.Array;
+
+        return BufferType.Object;
     }
 }
 

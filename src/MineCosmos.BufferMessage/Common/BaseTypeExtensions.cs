@@ -14,6 +14,20 @@ public static class BaseTypeExtensions
         return nullableType is null;
     }
 
+    public static bool IsValue(this Type objectType)
+    {
+        return objectType.IsValueType;
+    }
+
+    public static bool IsString(this Type objectType)
+    {
+        return objectType == typeof(string) ||
+                objectType == typeof(DateTime) ||
+                objectType == typeof(decimal) ||
+                objectType == typeof(float) ||
+                objectType == typeof(double);
+    }
+
     public static bool IsArray(this Type type, out Type innerType)
     {
         if (type.IsValueType)
