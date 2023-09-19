@@ -30,7 +30,7 @@ internal class BufferMessageFactory
 
     public static object? ReadString(ref MineCosmosReader reader, Type objectType)
     {
-        var length = reader.ReadInt32();
+        var length = reader.ReadByte();
         if (objectType == typeof(string)) return reader.ReadUnicode(length);
         if (objectType == typeof(DateTime)) return reader.ReadUnicode(length).ConvertTo<DateTime>();
         if (objectType == typeof(decimal)) return reader.ReadUnicode(length).ConvertTo<decimal>(0);
@@ -42,7 +42,7 @@ internal class BufferMessageFactory
 
     public static object ReadArray(ref MineCosmosReader reader, Type objectType)
     {
-        var length = reader.ReadInt32();
+        var length = reader.ReadByte();
         object?[] result = new object[length];
         for (int i = 0; i < length; i++)
         {
@@ -68,14 +68,11 @@ internal class BufferMessageFactory
 
             if ((type & BufferType.String) > 0)
             {
-                var length = reader.ReadInt32();
-
                 item.SetValue(result, ReadString(ref reader, innerType));
             }
 
             if ((type & BufferType.Array) > 0)
             {
-                var length = reader.ReadInt32();
                 innerType.IsArray(out var arrayType);
 
                 item.SetValue(result, ReadArray(ref reader, arrayType!));

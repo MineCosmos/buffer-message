@@ -16,7 +16,11 @@ public static class BaseTypeExtensions
 
     public static bool IsValue(this Type objectType)
     {
-        return objectType.IsValueType;
+        return objectType.IsValueType &&
+            objectType != typeof(DateTime) &&
+            objectType != typeof(decimal) &&
+            objectType != typeof(float) &&
+            objectType != typeof(double);
     }
 
     public static bool IsString(this Type objectType)

@@ -8,9 +8,9 @@ public class BufferSerializer
 {
     private DefaultBufferConverter _converter = new();
 
-    public object? Deserialize<T>(byte[] buffer)
+    public T? Deserialize<T>(byte[] buffer)
     {
-        return Deserialize(typeof(T), buffer);
+        return (T?)Deserialize(typeof(T), buffer);
     }
 
     private object? Deserialize(Type objectType, byte[] buffer)
