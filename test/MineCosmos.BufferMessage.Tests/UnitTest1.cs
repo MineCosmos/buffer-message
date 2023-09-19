@@ -71,7 +71,7 @@ public class ValueTypesTests
         var serializer = new BufferSerializer();
         var buffer = serializer.Serialize(new Student());
 
-        Trace.WriteLine($"buffer-test: json: {Encoding.Unicode.GetByteCount(json)} || buffer: {buffer.Length}");
+        Trace.WriteLine($"buffer-test: json: {Encoding.Unicode.GetByteCount(json)} || buffer: {buffer.Length} || 压缩比：{Encoding.Unicode.GetByteCount(json) / (float)buffer.Length:0.00}:1");
         Trace.WriteLine($"buffer-test: json: {json}");
         Trace.WriteLine($"buffer-test: buffer: {buffer.ToHexString()}");
 
